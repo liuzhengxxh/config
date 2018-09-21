@@ -1,1 +1,25 @@
-profile:profile-defult
+security: 
+  basic: 
+    enabled: true #安全认证
+  user:  #设置用户名和密码
+    name: user
+    password: password
+server:
+  port: 8761
+eureka:
+  client:
+    healthcheck: 
+      enabled: true #健康检查
+    fetch-registry: false
+    register-with-eureka: false #多服务交互时只是服务不当做client
+    service-url:
+      defaultZone: http://user:password@localhost:8761/eureka #认证地址    #http://localhost:8761/eureka 添加eureka注册地址
+  datacenter: cloud    #datacenter和environment是用来修改eureka主页System Status中的元数据
+  environment: product
+  server:  #健康检查时间尽量不做修改，会打破自我保护特性
+    enable-self-preservation: false #关闭自我保护（自我保护认为一组微服务中中断了，怀疑service问题，因此不剔除client  参数：false关闭，true开启）
+    eviction-interval-timer-in-ms: 60000 #清理间隔（健康检查 加快剔除  默认60*1000（毫秒））
+  instance:
+    lease-expiration-duration-in-seconds: 90 #租期到期时间（健康检查 默认90秒无发送心跳则从注册表中剔除clien  默认时间90秒（可修改））
+    lease-renewal-interval-in-seconds: 30 #租期更新时间（健康检查 默认30秒更新查看连接是否正常  默认时间30秒（可修改））
+      
